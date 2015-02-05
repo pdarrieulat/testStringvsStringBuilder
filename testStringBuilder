@@ -1,0 +1,73 @@
+package com.yellowbox.stats;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class testStringBuilder {
+
+	public static void main(String[] args) {
+
+		String constante = "aaaaa";
+		List<Integer> nbBoucles = new ArrayList<Integer>();
+		nbBoucles.add(1);
+//		nbBoucles.add(1);
+//		nbBoucles.add(10);
+//		nbBoucles.add(100);
+//		nbBoucles.add(250);
+//		nbBoucles.add(500);
+//		nbBoucles.add(1000);
+//		nbBoucles.add(10000);
+//	  nbBoucles.add(100000);
+		for (Integer nbBoucle : nbBoucles) {
+
+			long startString = System.nanoTime();
+			String toto = "aaaaa";
+			for (int i = 0; i < nbBoucle; i++) {
+				toto += constante;
+			}
+			long endString = System.nanoTime();
+
+			long startStringBuilder = System.nanoTime();
+			StringBuilder totobuff = new StringBuilder();//((nbBoucle + constante.length()));
+			totobuff.append("aaaaa");
+			for (int i = 0; i < nbBoucle; i++) {
+				totobuff.append(constante);
+			}
+			long endStringBuilder = System.nanoTime();
+
+			long totalString = endString - startString;
+			long totalStringBuilder = endStringBuilder - startStringBuilder;
+			// System.out.println("String :"+totalString);
+			// System.out.println("StringBuilder :"+(endStringBuilder-startStringBuilder));
+
+			double rapport = totalString / (double) totalStringBuilder;
+			rapport = Math.round(rapport * 100) / (double) 100;
+			System.out.println("Pour " + nbBoucle + " boucles : String " + rapport + " fois plus LENT !!!!  String(" + format(totalString)
+					+ ") StringBuilder(" + format(totalStringBuilder) + ")");
+		}
+	}
+
+	public static String format(long nanos) {
+		if (nanos < 1000) {
+			return nanos + " nano sec";
+		} else if (nanos < (1000 * 1000)) {
+			double ms = nanos / ((double) (1000));
+			ms = round(ms);
+			return ms + " micro sec";
+		} else if (nanos < (1000 * 1000 * 1000)) {
+			double milli = nanos / ((double) (1000 * 1000));
+			milli = round(milli);
+			return milli + " milli sec";
+		} else if (nanos < (1000 * 1000 * 1000 * 1000)) {
+			double seconde = nanos / ((double) (1000 * 1000 * 1000));
+			seconde = round(seconde);
+			return seconde + " sec";
+		} else {
+			return nanos / ((double) (1000 * 1000 * 1000 * 60)) + " min";
+		}
+	}
+
+	public static double round(double doubleToRound) {
+		return Math.round(doubleToRound * 100) / (double) 100;
+	}
+}
